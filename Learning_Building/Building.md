@@ -6,6 +6,7 @@ This was achieved by ensuring:
 1. The only route path was contained for the HomeView only, rather than ensuring we have router links for all the views which would then result in a re-loading of the page.
 
 thus in index.js:
+
 import {creatWebHistory, createRoute}
 import HomeView from  '@/views/HomeView.vue'
 
