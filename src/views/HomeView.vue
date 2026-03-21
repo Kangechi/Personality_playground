@@ -47,7 +47,8 @@ function goToPanel(index) {
     currentIndex.value = index
 }
 function handleScroll(event) {
-    
+  //@wheel and the function handleScroll work majorly for the mouse thus inability to work on another device
+  // I want to fix this version by enabling each scroll event on different devices to be accommodated
   if (event.deltaY > 0) {
     if (currentIndex.value < TOTAL_PANELS - 1) {
       currentIndex.value++
