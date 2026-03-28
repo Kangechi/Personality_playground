@@ -10,7 +10,11 @@
    
   >
     <section class="panel" id="home">
-      <h1>Hello 👋</h1>
+      <HomeSection
+      :stage="homeStage"
+      @enter="goToPanel(1)"
+
+      />
     </section>
 
     <section class="panel" id="about">
@@ -34,10 +38,22 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import NavCircles from '@/components/NavCircles.vue'
+import HomeSection from '@/components/HomeSection.vue'
+
 
 const currentIndex = ref(0)
 const TOTAL_PANELS = 5
 const touchStartX = ref(0)  // ← was missing
+
+/*
+When adding the slide process for Hello, I'm Patience + a photo of me
+and lastly wlecome leading you to the next route - its like stages
+Stages within the same page - the home section
+Hence ref- reactive then enseuring the 0,1,2 stages are constant
+*/ 
+const homeStage = ref(0)
+const HOME_STAGES = 3
+
 
 const slidePosition = computed(() => {
   return `translateX(${currentIndex.value * -100}vw)`
@@ -46,16 +62,36 @@ const slidePosition = computed(() => {
 function goToPanel(index) {
   currentIndex.value = index
 }
-
+/*
+Now this will have two behavoirs
+IF were on the Home panel (currentIndex === 0)
+AND we havent seen all home stage yet
+-> advance homeStage instead of moving panels
+ELSE -> Move to the next panel as normal
+*/
 function goNext() {
-  if (currentIndex.value < TOTAL_PANELS - 1) {
-    currentIndex.value++
+  if (currentIndex.value === 0 && homeStage.value < HOME_STAGES - 1) {
+    homeStage.value++
+  }else {
+    if (currentIndex.value < TOTAL_PANELS -1){
+      currentIndex.value++
+    }
+
   }
 }
+/*
+If were on Home and homestage is above 0
+-> go back a stage instead of going to previous panel
 
+ELSE -> move to previous panel as normal
+*/
 function goPrev() {
-  if (currentIndex.value > 0) {
-    currentIndex.value--
+  if (currentIndex.value === 0 && homeStage.value > 0) {
+    homeStage.value--
+  }else {
+    if(currentIndex.value > 0){
+      currentIndex.value--
+    }
   }
 }
 
